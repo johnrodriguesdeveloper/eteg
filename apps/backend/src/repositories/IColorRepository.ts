@@ -12,4 +12,5 @@ export interface IColorRepository {
   findAll(): Promise<ColorRecord[]>;
   findByName(name: string): Promise<ColorRecord | null>;
   create(data: CreateColorInput): Promise<ColorRecord>;
+  delete(id: string): Promise<void>;
 }

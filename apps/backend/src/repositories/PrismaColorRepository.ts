@@ -1,4 +1,5 @@
-import type { PrismaClient } from "../generated/prisma/client.ts";
+import { Prisma, type PrismaClient } from "../generated/prisma/client.ts";
+import { NotFoundError } from "../errors/AppError.ts";
 import type { ColorRecord, CreateColorInput, IColorRepository } from "./IColorRepository.ts";
 
 export class PrismaColorRepository implements IColorRepository {
@@ -18,5 +19,16 @@ export class PrismaColorRepository implements IColorRepository {
 
   async create(data: CreateColorInput): Promise<ColorRecord> {
     return this.prisma.color.create({ data });
+  }
+
+  async delete(id: string): Promise<void> {
+    try {
+      await this.prisma.color.delete({ where: { id } });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+        throw new NotFoundError("Cor não encontrada.");
+      }
+      throw error;
+    }
   }
 }
