@@ -16,10 +16,10 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 ---
 
 ## 🏗️ Fase 2: Domínio e Casos de Uso (Backend)
-- [ ] Configurar o pacote `@eteg/shared` com Zod exportando o `ClientSchema` (validação de tipos e formatos).
-- [ ] Criar a interface do repositório `IClientRepository` em `apps/backend/src/repositories`.
-- [ ] Criar o caso de uso `CreateClientUseCase` em `apps/backend/src/use-cases`.
-- [ ] Implementar a regra de negócio que verifica duplicidade de CPF ou E-mail antes de salvar.
+- [x] Configurar o pacote `@eteg/shared` com Zod exportando o `ClientSchema` (validação de tipos e formatos).
+- [x] Criar a interface do repositório `IClientRepository` em `apps/backend/src/repositories`.
+- [x] Criar o caso de uso `CreateClientUseCase` em `apps/backend/src/use-cases`.
+- [x] Implementar a regra de negócio que verifica duplicidade de CPF ou E-mail antes de salvar.
 
 **Critérios de Aceite:**
 * O pacote `@eteg/shared` deve ser utilizável pelo backend.
