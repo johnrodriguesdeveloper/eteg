@@ -120,13 +120,28 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 
 ---
 
-## 🐳 Fase 10: DevOps e Entrega Final
+## 🌓 Fase 10: Polimento de UX - Alternância de Tema (Dark/Light Mode)
+- [x] Garantir que a configuração do Tailwind (`tailwind.config.ts` ou `.js`) no `apps/frontend` possua a propriedade `darkMode: ["class"]`.
+- [x] Criar a pasta `apps/frontend/src/components/ui/theme-toggle`.
+- [x] Criar o arquivo `types.d.ts` com a tipagem dos estados do tema (light, dark, system).
+- [x] Criar o arquivo `hook.ts` contendo a lógica de negócio: leitura/gravação no `localStorage`, detecção do tema do sistema e injeção da classe `dark` no HTML raiz.
+- [x] Criar o arquivo `index.tsx` renderizando um botão com ícones (Sol/Lua do `lucide-react`) e consumindo as funções do `hook.ts`.
+- [x] Adicionar o componente `<ThemeToggle />` no topo da aplicação (`App.tsx` ou layout principal).
+
+**Critérios de Aceite:**
+* A regra arquitetural deve ser cumprida: o `index.tsx` do botão não pode conter `useState` ou lógicas de `localStorage`, tudo deve vir do `hook.ts`.
+* A preferência de tema do usuário deve persistir ao recarregar a página (via `localStorage`).
+* A interface do formulário (Shadcn) deve reagir visualmente e alternar as cores perfeitamente.
+
+---
+
+## 🐳 Fase 11: DevOps e Entrega Final
 - [ ] Criar um `Dockerfile` otimizado (multi-stage) no `apps/backend`.
 - [ ] Criar um `Dockerfile` otimizado (multi-stage) no `apps/frontend` (usando Node para build e Nginx para servir, por exemplo).
-- [ ] Atualizar o `docker-compose.yml` na raiz do monorepo para orquestrar os 3 serviços juntos: `postgres`, `backend` e `frontend`, atendendo ao requisito de conteinerização[cite: 1].
+- [ ] Atualizar o `docker-compose.yml` na raiz do monorepo para orquestrar os 3 serviços juntos: `postgres`, `backend` e `frontend`, atendendo ao requisito de conteinerização.
 - [ ] Escrever o `README.md` final na raiz do projeto. Explicar a estrutura do Monorepo, as decisões de Arquitetura Hexagonal (Backend) e Custom Hooks (Frontend), a modelagem dinâmica de cores e como rodar o projeto.
 
 **Critérios de Aceite:**
 * O comando `docker compose up --build` na raiz deve subir toda a aplicação perfeitamente conectada.
-* O código fonte de toda a solução deve estar contido e rodando a partir de um único repositório[cite: 1].
-* A documentação deve ser clara, profissional e direcionada para facilitar a vida da "outra equipe" que assumirá o projeto[cite: 1].
+* O código fonte de toda a solução deve estar contido e rodando a partir de um único repositório.
+* A documentação deve ser clara, profissional e direcionada para facilitar a vida da "outra equipe" que assumirá o projeto.
