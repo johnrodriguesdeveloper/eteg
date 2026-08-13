@@ -93,14 +93,96 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 * O monorepo agora está pronto para que o Frontend importe e utilize as exatas mesmas validações.
 
 ## 🎨 Fase 8: Setup do Frontend e Componentes Base (React + Shadcn)
-- [ ] Configurar o TailwindCSS no `apps/frontend` (se ainda não estiver).
-- [ ] Inicializar o Shadcn UI (`npx shadcn-ui@latest init`) no frontend.
-- [ ] Adicionar os componentes do Shadcn que usaremos: `form`, `input`, `select`, `textarea`, `button` e `sonner` (para os Toasts).
-- [ ] Instalar `axios`, `react-hook-form` e `@hookform/resolvers`.
-- [ ] Criar a configuração base do Axios em `apps/frontend/src/lib/api.ts` apontando para `http://localhost:3000` (ou a porta do seu backend).
-- [ ] Garantir que o `apps/frontend/package.json` dependa do `@eteg/shared` para importar os schemas.
+- [x] Configurar o TailwindCSS no `apps/frontend` (se ainda não estiver).
+- [x] Inicializar o Shadcn UI (`npx shadcn-ui@latest init`) no frontend.
+- [x] Adicionar os componentes do Shadcn que usaremos: `form`, `input`, `select`, `textarea`, `button` e `sonner` (para os Toasts).
+- [x] Instalar `axios`, `react-hook-form` e `@hookform/resolvers`.
+- [x] Criar a configuração base do Axios em `apps/frontend/src/lib/api.ts` apontando para `http://localhost:3000` (ou a porta do seu backend).
+- [x] Garantir que o `apps/frontend/package.json` dependa do `@eteg/shared` para importar os schemas.
 
 **Critérios de Aceite:**
 * O frontend deve rodar sem erros estruturais.
 * O Shadcn deve estar configurado na pasta `components/ui`.
 * A instância do Axios deve estar pronta para ser usada nos hooks.
+
+## 📝 Fase 9: O Formulário de Cadastro do John Doe (Frontend)
+- [x] Criar a pasta `apps/frontend/src/features/client-form` (ou equivalente) contendo exatamente: `index.tsx`, `hook.ts` e `types.d.ts`.
+- [x] No `hook.ts`, implementar a chamada `GET /colors` com Axios em um `useEffect` (ou React Query) para popular a lista de cores disponíveis[cite: 1].
+- [x] No `hook.ts`, configurar o `react-hook-form` com o `zodResolver`, importando o schema de validação diretamente de `@eteg/shared`.
+- [x] No `hook.ts`, criar a função de `onSubmit` chamando `POST /clients`. Gerenciar o estado de *loading* e disparar Toasts (Sonner) de sucesso ou erro (ex: informando se o CPF/E-mail já está cadastrado), garantindo o feedback ao usuário[cite: 1].
+- [x] No `index.tsx`, construir a interface renderizando os componentes do Shadcn (`Form`, `Input`, `Select`, `Textarea`, `Button`) e consumindo estritamente as propriedades retornadas pelo `hook.ts`.
+- [x] Importar e renderizar esse formulário na página principal (`App.tsx`).
+
+**Critérios de Aceite:**
+* O arquivo `index.tsx` não deve conter nenhuma lógica de estado, ciclo de vida (`useEffect`) ou chamadas HTTP (Respeito rigoroso à separação de responsabilidades).
+* O campo de "Cor preferida" deve listar dinamicamente as opções vindas da API, provando que podem mudar posteriormente[cite: 1].
+* O usuário não pode conseguir preencher o formulário mais de uma vez com o mesmo CPF ou E-mail, e deve receber feedback claro sobre o resultado da operação[cite: 1].
+
+---
+
+## 🌓 Fase 10: Polimento de UX - Alternância de Tema (Dark/Light Mode)
+- [x] Garantir que a configuração do Tailwind (`tailwind.config.ts` ou `.js`) no `apps/frontend` possua a propriedade `darkMode: ["class"]`.
+- [x] Criar a pasta `apps/frontend/src/components/ui/theme-toggle`.
+- [x] Criar o arquivo `types.d.ts` com a tipagem dos estados do tema (light, dark, system).
+- [x] Criar o arquivo `hook.ts` contendo a lógica de negócio: leitura/gravação no `localStorage`, detecção do tema do sistema e injeção da classe `dark` no HTML raiz.
+- [x] Criar o arquivo `index.tsx` renderizando um botão com ícones (Sol/Lua do `lucide-react`) e consumindo as funções do `hook.ts`.
+- [x] Adicionar o componente `<ThemeToggle />` no topo da aplicação (`App.tsx` ou layout principal).
+
+**Critérios de Aceite:**
+* A regra arquitetural deve ser cumprida: o `index.tsx` do botão não pode conter `useState` ou lógicas de `localStorage`, tudo deve vir do `hook.ts`.
+* A preferência de tema do usuário deve persistir ao recarregar a página (via `localStorage`).
+* A interface do formulário (Shadcn) deve reagir visualmente e alternar as cores perfeitamente.
+
+---
+
+## ⚙️ Fase 11: Evolução da API - Exclusão de Cores (Backend)
+- [x] Adicionar o método `delete(id: string)` na interface `IColorRepository` e implementá-lo no `PrismaColorRepository`.
+- [x] Criar o `DeleteColorUseCase` na pasta de use-cases do backend.
+- [x] Atualizar o `ColorController` e o arquivo de rotas para incluir o endpoint `DELETE /colors/:id`.
+- [x] Atualizar as configurações do Swagger para incluir a documentação deste novo endpoint.
+
+**Critérios de Aceite:**
+* A API deve aceitar requisições `DELETE` em `/colors/:id` e remover a cor do banco de dados.
+* O endpoint deve retornar status `204 (No Content)` em caso de sucesso.
+* A exclusão de cores deve estar visível e testável na interface do Swagger UI.
+
+---
+
+## 📊 Fase 12: Painel Admin - Clientes e Cores (Frontend)
+- [x] Instalar o `react-router-dom` no `apps/frontend` e configurar o roteamento básico: `/` (Formulário do Cliente) e `/admin` (Painel Admin).
+- [x] Adicionar um botão discreto na tela principal chamado "Admin" para navegar até a nova tela.
+- [x] Criar a pasta `apps/frontend/src/features/admin-dashboard` mantendo a regra arquitetural rigorosa: `index.tsx`, `hook.ts` e `types.d.ts`.
+- [x] No `hook.ts`, implementar as chamadas Axios para buscar clientes (`GET /clients`), buscar cores (`GET /colors`), criar cor (`POST /colors`), deletar cor (`DELETE /colors/:id`) e deletar cliente (`DELETE /clients/:id`).
+- [x] No `index.tsx`, montar a interface utilizando os componentes do Shadcn (ex: `Table` ou `Card` para a listagem) exibindo todos os clientes cadastrados e uma seção separada para gerenciar as cores.
+
+**Critérios de Aceite:**
+* A tela de Admin deve ser pública (sem autenticação), permitindo visualizar facilmente o que foi construído.
+* A regra arquitetural deve ser cumprida: o `index.tsx` do dashboard não pode conter lógica de chamadas HTTP ou manipulação de estados, tudo deve ser delegado ao `hook.ts`.
+* O administrador deve conseguir ver a lista de clientes, adicionar uma nova cor e deletar uma cor existente, com feedbacks visuais (Toasts) de sucesso ou erro.
+
+---
+
+## 🎨 Fase 13: Polimento de UX - Seletor Visual de Cores (Admin)
+- [x] No painel Admin (`apps/frontend/src/features/admin-dashboard`), localizar o formulário de criação de novas cores.
+- [x] Substituir o `Input` de texto padrão do código Hexadecimal por um input do tipo cor (`<input type="color" />`).
+- [x] Integrar esse seletor de cor nativo com o componente `Form` do Shadcn e o `react-hook-form` presente no `hook.ts`.
+- [x] Criar uma pequena visualização (um círculo ou quadrado colorido) ao lado das cores já listadas na tabela do Admin, para que o administrador veja a cor real em vez de apenas ler o código Hexadecimal.
+
+**Critérios de Aceite:**
+* O administrador deve conseguir escolher uma nova cor clicando em uma paleta visual, sem precisar digitar códigos hexadecimais manualmente.
+* O valor escolhido na paleta deve ser enviado corretamente para a API (mantendo o formato `#XXXXXX`).
+* A listagem de cores no painel Admin deve mostrar uma amostra visual (preview) de cada cor cadastrada.
+* A regra arquitetural de manter a lógica de estado e registro do formulário dentro do `hook.ts` deve ser rigorosamente mantida.
+
+---
+
+## 🐳 Fase 14: DevOps e Entrega Final
+- [ ] Criar um `Dockerfile` otimizado (multi-stage) no `apps/backend`.
+- [ ] Criar um `Dockerfile` otimizado (multi-stage) no `apps/frontend`.
+- [ ] Atualizar o `docker-compose.yml` na raiz do monorepo para orquestrar os 3 serviços juntos: `postgres`, `backend` e `frontend`, atendendo ao requisito de conteinerização.
+- [ ] Escrever o `README.md` final na raiz do projeto. Explicar a estrutura do Monorepo, as decisões de Arquitetura Hexagonal (Backend) e Custom Hooks (Frontend), a tela de Admin aberta (justificando a decisão pelo tempo de entrega) e como rodar o projeto.
+
+**Critérios de Aceite:**
+* O comando `docker compose up --build` na raiz deve subir toda a aplicação perfeitamente conectada.
+* O código fonte de toda a solução deve estar contido e rodando a partir de um único repositório.
+* A documentação deve ser clara, profissional e direcionada para facilitar a vida da "outra equipe" que assumirá o projeto.

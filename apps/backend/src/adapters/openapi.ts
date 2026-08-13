@@ -159,5 +159,26 @@ export const openApiDocument = {
         },
       },
     },
+    "/colors/{id}": {
+      delete: {
+        tags: ["Cores"],
+        summary: "Remove uma cor",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          "204": { description: "Cor removida com sucesso" },
+          "404": {
+            description: "Cor não encontrada",
+            content: { "application/json": { schema: errorResponseSchema } },
+          },
+        },
+      },
+    },
   },
 };
