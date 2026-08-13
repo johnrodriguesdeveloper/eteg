@@ -1,16 +1,17 @@
 import { z } from "zod";
-import { ClientSchema } from "@eteg/shared";
+import { ClientSchema, CreateColorSchema } from "@eteg/shared";
 
-function buildClientRequestSchema(): unknown {
+function buildJsonSchema(schema: z.ZodType, label: string): unknown {
   try {
-    return z.toJSONSchema(ClientSchema, { target: "openapi-3.0", io: "input" });
+    return z.toJSONSchema(schema, { target: "openapi-3.0", io: "input" });
   } catch (error) {
-    console.error("Falha ao gerar o schema OpenAPI a partir do ClientSchema.", error);
+    console.error(`Falha ao gerar o schema OpenAPI a partir do ${label}.`, error);
     return { type: "object" };
   }
 }
 
-const clientRequestSchema = buildClientRequestSchema();
+const clientRequestSchema = buildJsonSchema(ClientSchema, "ClientSchema");
+const createColorRequestSchema = buildJsonSchema(CreateColorSchema, "CreateColorSchema");
 
 const clientResponseSchema = {
   type: "object",
@@ -132,6 +133,28 @@ export const openApiDocument = {
           "200": {
             description: "Lista de cores",
             content: { "application/json": { schema: { type: "array", items: colorResponseSchema } } },
+          },
+        },
+      },
+      post: {
+        tags: ["Cores"],
+        summary: "Cadastra uma nova cor",
+        requestBody: {
+          required: true,
+          content: { "application/json": { schema: createColorRequestSchema } },
+        },
+        responses: {
+          "201": {
+            description: "Cor criada com sucesso",
+            content: { "application/json": { schema: colorResponseSchema } },
+          },
+          "400": {
+            description: "Dados inválidos",
+            content: { "application/json": { schema: errorResponseSchema } },
+          },
+          "409": {
+            description: "Cor já cadastrada",
+            content: { "application/json": { schema: errorResponseSchema } },
           },
         },
       },
