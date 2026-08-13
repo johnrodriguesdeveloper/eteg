@@ -80,11 +80,11 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 * Rodar o comando de seed (`npx prisma db seed`) deve popular o banco com as cores iniciais prontas para o formulário do frontend consumir.
 
 ## ♻️ Fase 7: Refatoração do Monorepo (Shared Schemas)
-- [ ] Criar a pasta `src` dentro de `packages/shared` (se não existir) e configurar um arquivo `index.ts` principal.
-- [ ] Mover todos os schemas de validação do Zod (ex: `CreateClientSchema`, `CreateColorSchema`) que estão atualmente em `apps/backend` para dentro de `packages/shared/src`.
-- [ ] Exportar todos esses schemas e seus respectivos tipos inferidos (`z.infer`) no arquivo `packages/shared/src/index.ts`.
-- [ ] Garantir que o `package.json` do `@eteg/shared` tenha o `zod` instalado nas dependências e que os pontos de entrada (`main` ou `exports`) estejam corretos.
-- [ ] Refatorar o `apps/backend` (Middlewares, Controllers, Swagger, etc.) substituindo os imports locais dos schemas pelo import direto do pacote `@eteg/shared`.
+- [x] Criar a pasta `src` dentro de `packages/shared` (se não existir) e configurar um arquivo `index.ts` principal.
+- [x] Mover todos os schemas de validação do Zod (ex: `CreateClientSchema`, `CreateColorSchema`) que estão atualmente em `apps/backend` para dentro de `packages/shared/src`.
+- [x] Exportar todos esses schemas e seus respectivos tipos inferidos (`z.infer`) no arquivo `packages/shared/src/index.ts`.
+- [x] Garantir que o `package.json` do `@eteg/shared` tenha o `zod` instalado nas dependências e que os pontos de entrada (`main` ou `exports`) estejam corretos.
+- [x] Refatorar o `apps/backend` (Middlewares, Controllers, Swagger, etc.) substituindo os imports locais dos schemas pelo import direto do pacote `@eteg/shared`.
 
 **Critérios de Aceite:**
 * Não deve sobrar nenhum schema de domínio do Zod perdido dentro da pasta do backend.
