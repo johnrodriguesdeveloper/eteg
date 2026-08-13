@@ -93,14 +93,40 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 * O monorepo agora está pronto para que o Frontend importe e utilize as exatas mesmas validações.
 
 ## 🎨 Fase 8: Setup do Frontend e Componentes Base (React + Shadcn)
-- [ ] Configurar o TailwindCSS no `apps/frontend` (se ainda não estiver).
-- [ ] Inicializar o Shadcn UI (`npx shadcn-ui@latest init`) no frontend.
-- [ ] Adicionar os componentes do Shadcn que usaremos: `form`, `input`, `select`, `textarea`, `button` e `sonner` (para os Toasts).
-- [ ] Instalar `axios`, `react-hook-form` e `@hookform/resolvers`.
-- [ ] Criar a configuração base do Axios em `apps/frontend/src/lib/api.ts` apontando para `http://localhost:3000` (ou a porta do seu backend).
-- [ ] Garantir que o `apps/frontend/package.json` dependa do `@eteg/shared` para importar os schemas.
+- [x] Configurar o TailwindCSS no `apps/frontend` (se ainda não estiver).
+- [x] Inicializar o Shadcn UI (`npx shadcn-ui@latest init`) no frontend.
+- [x] Adicionar os componentes do Shadcn que usaremos: `form`, `input`, `select`, `textarea`, `button` e `sonner` (para os Toasts).
+- [x] Instalar `axios`, `react-hook-form` e `@hookform/resolvers`.
+- [x] Criar a configuração base do Axios em `apps/frontend/src/lib/api.ts` apontando para `http://localhost:3000` (ou a porta do seu backend).
+- [x] Garantir que o `apps/frontend/package.json` dependa do `@eteg/shared` para importar os schemas.
 
 **Critérios de Aceite:**
 * O frontend deve rodar sem erros estruturais.
 * O Shadcn deve estar configurado na pasta `components/ui`.
 * A instância do Axios deve estar pronta para ser usada nos hooks.
+
+## 📝 Fase 9: O Formulário de Cadastro do John Doe (Frontend)
+- [ ] Criar a pasta `apps/frontend/src/features/client-form` (ou equivalente) contendo exatamente: `index.tsx`, `hook.ts` e `types.d.ts`.
+- [ ] No `hook.ts`, implementar a chamada `GET /colors` com Axios em um `useEffect` (ou React Query) para popular a lista de cores disponíveis[cite: 1].
+- [ ] No `hook.ts`, configurar o `react-hook-form` com o `zodResolver`, importando o schema de validação diretamente de `@eteg/shared`.
+- [ ] No `hook.ts`, criar a função de `onSubmit` chamando `POST /clients`. Gerenciar o estado de *loading* e disparar Toasts (Sonner) de sucesso ou erro (ex: informando se o CPF/E-mail já está cadastrado), garantindo o feedback ao usuário[cite: 1].
+- [ ] No `index.tsx`, construir a interface renderizando os componentes do Shadcn (`Form`, `Input`, `Select`, `Textarea`, `Button`) e consumindo estritamente as propriedades retornadas pelo `hook.ts`.
+- [ ] Importar e renderizar esse formulário na página principal (`App.tsx`).
+
+**Critérios de Aceite:**
+* O arquivo `index.tsx` não deve conter nenhuma lógica de estado, ciclo de vida (`useEffect`) ou chamadas HTTP (Respeito rigoroso à separação de responsabilidades).
+* O campo de "Cor preferida" deve listar dinamicamente as opções vindas da API, provando que podem mudar posteriormente[cite: 1].
+* O usuário não pode conseguir preencher o formulário mais de uma vez com o mesmo CPF ou E-mail, e deve receber feedback claro sobre o resultado da operação[cite: 1].
+
+---
+
+## 🐳 Fase 10: DevOps e Entrega Final
+- [ ] Criar um `Dockerfile` otimizado (multi-stage) no `apps/backend`.
+- [ ] Criar um `Dockerfile` otimizado (multi-stage) no `apps/frontend` (usando Node para build e Nginx para servir, por exemplo).
+- [ ] Atualizar o `docker-compose.yml` na raiz do monorepo para orquestrar os 3 serviços juntos: `postgres`, `backend` e `frontend`, atendendo ao requisito de conteinerização[cite: 1].
+- [ ] Escrever o `README.md` final na raiz do projeto. Explicar a estrutura do Monorepo, as decisões de Arquitetura Hexagonal (Backend) e Custom Hooks (Frontend), a modelagem dinâmica de cores e como rodar o projeto.
+
+**Critérios de Aceite:**
+* O comando `docker compose up --build` na raiz deve subir toda a aplicação perfeitamente conectada.
+* O código fonte de toda a solução deve estar contido e rodando a partir de um único repositório[cite: 1].
+* A documentação deve ser clara, profissional e direcionada para facilitar a vida da "outra equipe" que assumirá o projeto[cite: 1].
