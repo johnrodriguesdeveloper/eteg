@@ -1,0 +1,67 @@
+# Roadmap do Projeto: Eteg - John Doe (Desafio Técnico)
+
+Este documento rastreia o progresso do desenvolvimento da aplicação de cadastro de clientes, utilizando arquitetura hexagonal no backend, monorepo e validações compartilhadas.
+
+## 🗄️ Fase 1: Infraestrutura e Modelagem (Backend)
+- [x] Criar o arquivo `docker-compose.yml` na raiz contendo o serviço do PostgreSQL.
+- [x] Inicializar o Prisma ORM (`npx prisma init`) dentro de `apps/backend`.
+- [x] Criar o modelo `Client` no `schema.prisma` com os campos: Nome completo, CPF, e-mail, cor preferida e observações[cite: 1].
+- [x] Executar a primeira migration e gerar o Prisma Client.
+
+**Critérios de Aceite:**
+* O banco de dados sobe corretamente via Docker na porta padrão (5432).
+* O schema do Prisma não utiliza `Enum` nativo do banco para as cores preferidas (para permitir flexibilidade futura).
+* CPF e E-mail devem ser marcados com `@unique` no schema para garantir a regra de cadastro único[cite: 1].
+
+---
+
+## 🏗️ Fase 2: Domínio e Casos de Uso (Backend)
+- [x] Configurar o pacote `@eteg/shared` com Zod exportando o `ClientSchema` (validação de tipos e formatos).
+- [x] Criar a interface do repositório `IClientRepository` em `apps/backend/src/repositories`.
+- [x] Criar o caso de uso `CreateClientUseCase` em `apps/backend/src/use-cases`.
+- [x] Implementar a regra de negócio que verifica duplicidade de CPF ou E-mail antes de salvar.
+
+**Critérios de Aceite:**
+* O pacote `@eteg/shared` deve ser utilizável pelo backend.
+* O `CreateClientUseCase` **não** pode ter imports do Express ou do Prisma (Aderência à Arquitetura Hexagonal).
+* O construtor do UseCase deve receber dependências através da interface `IClientRepository`.
+
+---
+
+## 🔌 Fase 3: Adaptadores e API (Backend)
+- [x] Criar o `PrismaClientRepository` implementando a interface `IClientRepository`.
+- [x] Criar o `ClientController` para lidar com a requisição HTTP.
+- [x] Criar middlewares em `apps/backend/src/middlewares` (Validação do Zod e Tratamento Global de Erros).
+- [x] Configurar as rotas no Express (ex: `POST /clients`) e conectar o Controller.
+- [x] Configurar o `app.ts` centralizando rotas e middlewares.
+
+**Critérios de Aceite:**
+* O endpoint `POST /clients` deve retornar status `201` em caso de sucesso.
+* O middleware de validação do Zod deve bloquear requisições com dados faltantes ou inválidos (retornando status `400`).
+* Tentativas de cadastro com CPF ou e-mail já existentes devem ser tratadas e retornar um erro claro (ex: status `409 Conflict`), garantindo que o cliente saiba do erro[cite: 1].
+
+## 🛡️ Fase 4: Evolução do Domínio - Painel Admin (Backend)
+- [x] Criar o modelo `Color` no `schema.prisma` (id, name, hexCode) para permitir flexibilidade e gerar nova migration.
+- [x] Atualizar a interface `IClientRepository` com os métodos `findAll()` e `delete(id: string)`.
+- [x] Criar a interface `IColorRepository` com o método `findAll()`.
+- [x] Implementar os novos métodos no `PrismaClientRepository` e criar o adaptador `PrismaColorRepository`.
+- [x] Criar os novos casos de uso em `apps/backend/src/use-cases`: `ListClientsUseCase`, `DeleteClientUseCase` e `ListColorsUseCase`.
+- [x] Criar os Controllers necessários e registrar as novas rotas no Express: `GET /clients`, `DELETE /clients/:id` e `GET /colors`.
+
+**Critérios de Aceite:**
+* A modelagem de cores passa a ser dinâmica pelo banco, cumprindo o requisito de que "isso pode mudar posteriormente".
+* O endpoint `DELETE /clients/:id` deve retornar status `204 (No Content)` em caso de sucesso.
+* O endpoint `GET /colors` deve listar as opções disponíveis de forma limpa.
+* A Arquitetura Hexagonal deve ser rigorosamente mantida: os novos UseCases **não** podem importar recursos do Prisma ou Express.
+
+## 📖 Fase 5: Documentação e Filtros Analíticos (Fechamento do Backend)
+- [x] Atualizar o `ListClientsUseCase` e o `IClientRepository` para aceitar um filtro opcional por cor (`colorId`).
+- [x] Atualizar o `ClientController` para extrair o `colorId` dos *Query Parameters* (`req.query`) e repassar ao UseCase.
+- [x] Instalar as dependências do Swagger (`swagger-ui-express`, `swagger-jsdoc` ou equivalente) no `apps/backend`.
+- [x] Integrar os schemas do Zod (do `@eteg/shared`) para gerar as definições do Swagger automaticamente (OpenAPI 3.0).
+- [x] Criar a rota pública `GET /api-docs` para renderizar a interface visual do Swagger UI.
+
+**Critérios de Aceite:**
+* A rota `GET /clients?colorId={id}` deve retornar apenas os clientes daquela cor específica.
+* A interface do Swagger deve carregar corretamente e listar todos os endpoints criados (Clientes e Cores).
+* Os *schemas* de requisição e resposta no Swagger devem refletir as regras de negócio[cite: 1] (ex: CPF obrigatório, etc).
