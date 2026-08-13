@@ -91,3 +91,16 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 * O backend deve compilar sem erros de importação.
 * A rota de criação de clientes e cores deve continuar funcionando e validando os dados normalmente.
 * O monorepo agora está pronto para que o Frontend importe e utilize as exatas mesmas validações.
+
+## 🎨 Fase 8: Setup do Frontend e Componentes Base (React + Shadcn)
+- [ ] Configurar o TailwindCSS no `apps/frontend` (se ainda não estiver).
+- [ ] Inicializar o Shadcn UI (`npx shadcn-ui@latest init`) no frontend.
+- [ ] Adicionar os componentes do Shadcn que usaremos: `form`, `input`, `select`, `textarea`, `button` e `sonner` (para os Toasts).
+- [ ] Instalar `axios`, `react-hook-form` e `@hookform/resolvers`.
+- [ ] Criar a configuração base do Axios em `apps/frontend/src/lib/api.ts` apontando para `http://localhost:3000` (ou a porta do seu backend).
+- [ ] Garantir que o `apps/frontend/package.json` dependa do `@eteg/shared` para importar os schemas.
+
+**Critérios de Aceite:**
+* O frontend deve rodar sem erros estruturais.
+* O Shadcn deve estar configurado na pasta `components/ui`.
+* A instância do Axios deve estar pronta para ser usada nos hooks.
