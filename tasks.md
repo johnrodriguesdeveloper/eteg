@@ -163,10 +163,10 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 ---
 
 ## 🎨 Fase 13: Polimento de UX - Seletor Visual de Cores (Admin)
-- [ ] No painel Admin (`apps/frontend/src/features/admin-dashboard`), localizar o formulário de criação de novas cores.
-- [ ] Substituir o `Input` de texto padrão do código Hexadecimal por um input do tipo cor (`<input type="color" />`).
-- [ ] Integrar esse seletor de cor nativo com o componente `Form` do Shadcn e o `react-hook-form` presente no `hook.ts`.
-- [ ] Criar uma pequena visualização (um círculo ou quadrado colorido) ao lado das cores já listadas na tabela do Admin, para que o administrador veja a cor real em vez de apenas ler o código Hexadecimal.
+- [x] No painel Admin (`apps/frontend/src/features/admin-dashboard`), localizar o formulário de criação de novas cores.
+- [x] Substituir o `Input` de texto padrão do código Hexadecimal por um input do tipo cor (`<input type="color" />`).
+- [x] Integrar esse seletor de cor nativo com o componente `Form` do Shadcn e o `react-hook-form` presente no `hook.ts`.
+- [x] Criar uma pequena visualização (um círculo ou quadrado colorido) ao lado das cores já listadas na tabela do Admin, para que o administrador veja a cor real em vez de apenas ler o código Hexadecimal.
 
 **Critérios de Aceite:**
 * O administrador deve conseguir escolher uma nova cor clicando em uma paleta visual, sem precisar digitar códigos hexadecimais manualmente.

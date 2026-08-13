@@ -24,6 +24,7 @@ export function AdminDashboard() {
     deletingColorId,
     colorForm,
     isCreatingColor,
+    hexCodePreview,
     onCreateColor,
     onDeleteClient,
     onDeleteColor,
@@ -124,7 +125,15 @@ export function AdminDashboard() {
                   {errors.name && <FieldError errors={[errors.name]} />}
                 </Field>
                 <Field data-invalid={!!errors.hexCode}>
-                  <Input placeholder="#000000" {...register('hexCode')} />
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      className="h-9 w-14 shrink-0 cursor-pointer rounded-md border border-input p-1"
+                      aria-label="Selecionar cor"
+                      {...register('hexCode')}
+                    />
+                    <span className="text-sm text-muted-foreground">{hexCodePreview}</span>
+                  </div>
                   {errors.hexCode && <FieldError errors={[errors.hexCode]} />}
                 </Field>
               </div>

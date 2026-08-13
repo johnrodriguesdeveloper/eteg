@@ -26,6 +26,7 @@ export interface UseAdminDashboardReturn {
   deletingColorId: string | null
   colorForm: UseFormReturn<CreateColorInput>
   isCreatingColor: boolean
+  hexCodePreview: string
   onCreateColor: (event?: React.BaseSyntheticEvent) => Promise<void>
   onDeleteClient: (id: string) => Promise<void>
   onDeleteColor: (id: string) => Promise<void>

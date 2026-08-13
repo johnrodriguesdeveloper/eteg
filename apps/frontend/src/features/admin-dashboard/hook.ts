@@ -27,7 +27,7 @@ export function useAdminDashboard(): UseAdminDashboardReturn {
     resolver: zodResolver(CreateColorSchema),
     defaultValues: {
       name: '',
-      hexCode: '',
+      hexCode: '#000000',
     },
   })
 
@@ -121,6 +121,7 @@ export function useAdminDashboard(): UseAdminDashboardReturn {
     deletingColorId,
     colorForm,
     isCreatingColor: colorForm.formState.isSubmitting,
+    hexCodePreview: colorForm.watch('hexCode'),
     onCreateColor,
     onDeleteClient,
     onDeleteColor,
