@@ -17,6 +17,6 @@ export interface IClientRepository {
   findByCpf(cpf: string): Promise<ClientRecord | null>;
   findByEmail(email: string): Promise<ClientRecord | null>;
   create(data: CreateClientInput): Promise<ClientRecord>;
-  findAll(): Promise<ClientRecord[]>;
+  findAll(colorId?: string): Promise<ClientRecord[]>;
   delete(id: string): Promise<void>;
 }

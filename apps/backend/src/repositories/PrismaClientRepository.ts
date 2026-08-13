@@ -36,8 +36,11 @@ export class PrismaClientRepository implements IClientRepository {
     }
   }
 
-  async findAll(): Promise<ClientRecord[]> {
-    return this.prisma.client.findMany({ orderBy: { createdAt: "desc" } });
+  async findAll(colorId?: string): Promise<ClientRecord[]> {
+    return this.prisma.client.findMany({
+      where: colorId ? { color: colorId } : undefined,
+      orderBy: { createdAt: "desc" },
+    });
   }
 
   async delete(id: string): Promise<void> {

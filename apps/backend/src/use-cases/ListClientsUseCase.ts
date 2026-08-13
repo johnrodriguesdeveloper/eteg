@@ -7,7 +7,7 @@ export class ListClientsUseCase {
     this.clientRepository = clientRepository;
   }
 
-  async execute(): Promise<ClientRecord[]> {
-    return this.clientRepository.findAll();
+  async execute(colorId?: string): Promise<ClientRecord[]> {
+    return this.clientRepository.findAll(colorId);
   }
 }

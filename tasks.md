@@ -55,11 +55,11 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 * A Arquitetura Hexagonal deve ser rigorosamente mantida: os novos UseCases **não** podem importar recursos do Prisma ou Express.
 
 ## 📖 Fase 5: Documentação e Filtros Analíticos (Fechamento do Backend)
-- [ ] Atualizar o `ListClientsUseCase` e o `IClientRepository` para aceitar um filtro opcional por cor (`colorId`).
-- [ ] Atualizar o `ClientController` para extrair o `colorId` dos *Query Parameters* (`req.query`) e repassar ao UseCase.
-- [ ] Instalar as dependências do Swagger (`swagger-ui-express`, `swagger-jsdoc` ou equivalente) no `apps/backend`.
-- [ ] Integrar os schemas do Zod (do `@eteg/shared`) para gerar as definições do Swagger automaticamente (OpenAPI 3.0).
-- [ ] Criar a rota pública `GET /api-docs` para renderizar a interface visual do Swagger UI.
+- [x] Atualizar o `ListClientsUseCase` e o `IClientRepository` para aceitar um filtro opcional por cor (`colorId`).
+- [x] Atualizar o `ClientController` para extrair o `colorId` dos *Query Parameters* (`req.query`) e repassar ao UseCase.
+- [x] Instalar as dependências do Swagger (`swagger-ui-express`, `swagger-jsdoc` ou equivalente) no `apps/backend`.
+- [x] Integrar os schemas do Zod (do `@eteg/shared`) para gerar as definições do Swagger automaticamente (OpenAPI 3.0).
+- [x] Criar a rota pública `GET /api-docs` para renderizar a interface visual do Swagger UI.
 
 **Critérios de Aceite:**
 * A rota `GET /clients?colorId={id}` deve retornar apenas os clientes daquela cor específica.

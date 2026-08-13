@@ -4,6 +4,7 @@ import { prisma } from "../database/prisma.ts";
 import { ClientController } from "../controllers/ClientController.ts";
 import { validateSchema } from "../middlewares/validateSchema.ts";
 import { PrismaClientRepository } from "../repositories/PrismaClientRepository.ts";
+import { ListClientsQuerySchema } from "../schemas/listClientsQuery.schema.ts";
 import { CreateClientUseCase } from "../use-cases/CreateClientUseCase.ts";
 import { DeleteClientUseCase } from "../use-cases/DeleteClientUseCase.ts";
 import { ListClientsUseCase } from "../use-cases/ListClientsUseCase.ts";
@@ -17,5 +18,5 @@ const clientController = new ClientController(createClientUseCase, listClientsUs
 export const clientRoutes = Router();
 
 clientRoutes.post("/", validateSchema(ClientSchema), clientController.create);
-clientRoutes.get("/", clientController.list);
+clientRoutes.get("/", validateSchema(ListClientsQuerySchema, "query"), clientController.list);
 clientRoutes.delete("/:id", clientController.remove);

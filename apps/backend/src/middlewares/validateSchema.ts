@@ -2,9 +2,12 @@ import type { NextFunction, Request, Response } from "express";
 import type { ZodType } from "zod";
 import { ValidationError } from "../errors/AppError.ts";
 
-export function validateSchema(schema: ZodType) {
-  return (req: Request, _res: Response, next: NextFunction): void => {
-    const result = schema.safeParse(req.body);
+type ValidationSource = "body" | "query";
+
+// req.query is a read-only getter in Express 5, so validated query data is published on res.locals instead.
+export function validateSchema(schema: ZodType, source: ValidationSource = "body") {
+  return (req: Request, res: Response, next: NextFunction): void => {
+    const result = schema.safeParse(req[source]);
 
     if (!result.success) {
       const details = result.error.issues.map((issue) => ({
@@ -15,7 +18,11 @@ export function validateSchema(schema: ZodType) {
       return;
     }
 
-    req.body = result.data;
+    if (source === "body") {
+      req.body = result.data;
+    } else {
+      res.locals["query"] = result.data;
+    }
     next();
   };
 }

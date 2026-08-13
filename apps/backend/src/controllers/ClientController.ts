@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import type { ListClientsQuery } from "../schemas/listClientsQuery.schema.ts";
 import type { CreateClientUseCase } from "../use-cases/CreateClientUseCase.ts";
 import type { DeleteClientUseCase } from "../use-cases/DeleteClientUseCase.ts";
 import type { ListClientsUseCase } from "../use-cases/ListClientsUseCase.ts";
@@ -29,7 +30,8 @@ export class ClientController {
 
   list = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const clients = await this.listClientsUseCase.execute();
+      const { colorId } = res.locals["query"] as ListClientsQuery;
+      const clients = await this.listClientsUseCase.execute(colorId);
       res.status(200).json(clients);
     } catch (error) {
       next(error);
