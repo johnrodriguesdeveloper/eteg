@@ -5,11 +5,13 @@ import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
 import { ClientSchema, type ClientInput } from '@eteg/shared'
 
-import { api } from '@/lib/api'
-import type { ColorOption, UseClientFormReturn } from './types.d.ts'
+import { createClient } from '@/lib/clients/requests'
+import { listColors } from '@/lib/colors/requests'
+import type { ColorRecord } from '@/lib/colors/types'
+import type { UseClientFormReturn } from './types.d.ts'
 
 export function useClientForm(): UseClientFormReturn {
-  const [colors, setColors] = useState<ColorOption[]>([])
+  const [colors, setColors] = useState<ColorRecord[]>([])
   const [isLoadingColors, setIsLoadingColors] = useState(true)
 
   const form = useForm<ClientInput>({
@@ -26,10 +28,10 @@ export function useClientForm(): UseClientFormReturn {
   useEffect(() => {
     let isMounted = true
 
-    api.get<ColorOption[]>('/colors')
-      .then((response) => {
+    listColors()
+      .then((data) => {
         if (isMounted) {
-          setColors(response.data)
+          setColors(data)
         }
       })
       .catch(() => {
@@ -50,7 +52,7 @@ export function useClientForm(): UseClientFormReturn {
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
-      await api.post('/clients', data)
+      await createClient(data)
       toast.success('Cliente cadastrado com sucesso!')
       form.reset()
     } catch (error) {

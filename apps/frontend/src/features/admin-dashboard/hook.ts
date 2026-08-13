@@ -5,8 +5,15 @@ import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
 import { CreateColorSchema, type CreateColorInput } from '@eteg/shared'
 
-import { api } from '@/lib/api'
-import type { ClientRecord, ColorRecord, UseAdminDashboardReturn } from './types.d.ts'
+import { deleteClient as deleteClientRequest, listClients } from '@/lib/clients/requests'
+import type { ClientRecord } from '@/lib/clients/types'
+import {
+  createColor as createColorRequest,
+  deleteColor as deleteColorRequest,
+  listColors,
+} from '@/lib/colors/requests'
+import type { ColorRecord } from '@/lib/colors/types'
+import type { UseAdminDashboardReturn } from './types.d.ts'
 
 function extractErrorMessage(error: unknown, fallback: string): string {
   if (isAxiosError<{ error?: string }>(error) && error.response) {
@@ -31,15 +38,13 @@ export function useAdminDashboard(): UseAdminDashboardReturn {
     },
   })
 
-  const fetchColors = () => api.get<ColorRecord[]>('/colors').then((response) => response.data)
-
   useEffect(() => {
     let isMounted = true
 
-    api.get<ClientRecord[]>('/clients')
-      .then((response) => {
+    listClients()
+      .then((data) => {
         if (isMounted) {
-          setClients(response.data)
+          setClients(data)
         }
       })
       .catch(() => {
@@ -53,7 +58,7 @@ export function useAdminDashboard(): UseAdminDashboardReturn {
         }
       })
 
-    fetchColors()
+    listColors()
       .then((data) => {
         if (isMounted) {
           setColors(data)
@@ -77,10 +82,10 @@ export function useAdminDashboard(): UseAdminDashboardReturn {
 
   const onCreateColor = colorForm.handleSubmit(async (data) => {
     try {
-      await api.post('/colors', data)
+      await createColorRequest(data)
       toast.success('Cor cadastrada com sucesso!')
       colorForm.reset()
-      setColors(await fetchColors())
+      setColors(await listColors())
     } catch (error) {
       toast.error(extractErrorMessage(error, 'Não foi possível cadastrar a cor.'))
     }
@@ -89,7 +94,7 @@ export function useAdminDashboard(): UseAdminDashboardReturn {
   const onDeleteClient = async (id: string) => {
     setDeletingClientId(id)
     try {
-      await api.delete(`/clients/${id}`)
+      await deleteClientRequest(id)
       setClients((current) => current.filter((client) => client.id !== id))
       toast.success('Cliente removido com sucesso!')
     } catch (error) {
@@ -102,7 +107,7 @@ export function useAdminDashboard(): UseAdminDashboardReturn {
   const onDeleteColor = async (id: string) => {
     setDeletingColorId(id)
     try {
-      await api.delete(`/colors/${id}`)
+      await deleteColorRequest(id)
       setColors((current) => current.filter((color) => color.id !== id))
       toast.success('Cor removida com sucesso!')
     } catch (error) {
