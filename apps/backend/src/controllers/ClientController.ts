@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import type { ListClientsQuery } from "../schemas/listClientsQuery.schema.ts";
+import type { ListClientsQuery } from "@eteg/shared";
 import type { CreateClientUseCase } from "../use-cases/CreateClientUseCase.ts";
 import type { DeleteClientUseCase } from "../use-cases/DeleteClientUseCase.ts";
 import type { ListClientsUseCase } from "../use-cases/ListClientsUseCase.ts";

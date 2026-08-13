@@ -65,3 +65,42 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 * A rota `GET /clients?colorId={id}` deve retornar apenas os clientes daquela cor específica.
 * A interface do Swagger deve carregar corretamente e listar todos os endpoints criados (Clientes e Cores).
 * Os *schemas* de requisição e resposta no Swagger devem refletir as regras de negócio[cite: 1] (ex: CPF obrigatório, etc).
+
+## 🌈 Fase 6: Gestão de Cores e Seed do Banco (Backend)
+- [x] Criar o schema de validação `CreateColorSchema` no pacote `@eteg/shared` (exigindo `name` e `hexCode` como strings).
+- [x] Criar o `CreateColorUseCase` dentro de `apps/backend/src/use-cases`, injetando o `IColorRepository`.
+- [x] Atualizar o `ColorController` e o arquivo de rotas para incluir o `POST /colors`.
+- [x] Atualizar as configurações do Swagger para incluir a documentação deste novo endpoint.
+- [x] Criar um script de "Seed" (`apps/backend/prisma/seed.ts`) que insira automaticamente as 7 cores clássicas do arco-íris no banco de dados, configurando-o no `package.json`.
+
+**Critérios de Aceite:**
+* A API deve aceitar requisições `POST` em `/colors` e persistir a nova cor no banco, suportando o requisito de mudança de cores no futuro[cite: 1].
+* Se a requisição for enviada sem os campos corretos, o middleware do Zod deve bloquear e retornar `400 Bad Request`.
+* O novo endpoint deve estar visível e testável na interface do Swagger UI.
+* Rodar o comando de seed (`npx prisma db seed`) deve popular o banco com as cores iniciais prontas para o formulário do frontend consumir.
+
+## ♻️ Fase 7: Refatoração do Monorepo (Shared Schemas)
+- [x] Criar a pasta `src` dentro de `packages/shared` (se não existir) e configurar um arquivo `index.ts` principal.
+- [x] Mover todos os schemas de validação do Zod (ex: `CreateClientSchema`, `CreateColorSchema`) que estão atualmente em `apps/backend` para dentro de `packages/shared/src`.
+- [x] Exportar todos esses schemas e seus respectivos tipos inferidos (`z.infer`) no arquivo `packages/shared/src/index.ts`.
+- [x] Garantir que o `package.json` do `@eteg/shared` tenha o `zod` instalado nas dependências e que os pontos de entrada (`main` ou `exports`) estejam corretos.
+- [x] Refatorar o `apps/backend` (Middlewares, Controllers, Swagger, etc.) substituindo os imports locais dos schemas pelo import direto do pacote `@eteg/shared`.
+
+**Critérios de Aceite:**
+* Não deve sobrar nenhum schema de domínio do Zod perdido dentro da pasta do backend.
+* O backend deve compilar sem erros de importação.
+* A rota de criação de clientes e cores deve continuar funcionando e validando os dados normalmente.
+* O monorepo agora está pronto para que o Frontend importe e utilize as exatas mesmas validações.
+
+## 🎨 Fase 8: Setup do Frontend e Componentes Base (React + Shadcn)
+- [ ] Configurar o TailwindCSS no `apps/frontend` (se ainda não estiver).
+- [ ] Inicializar o Shadcn UI (`npx shadcn-ui@latest init`) no frontend.
+- [ ] Adicionar os componentes do Shadcn que usaremos: `form`, `input`, `select`, `textarea`, `button` e `sonner` (para os Toasts).
+- [ ] Instalar `axios`, `react-hook-form` e `@hookform/resolvers`.
+- [ ] Criar a configuração base do Axios em `apps/frontend/src/lib/api.ts` apontando para `http://localhost:3000` (ou a porta do seu backend).
+- [ ] Garantir que o `apps/frontend/package.json` dependa do `@eteg/shared` para importar os schemas.
+
+**Critérios de Aceite:**
+* O frontend deve rodar sem erros estruturais.
+* O Shadcn deve estar configurado na pasta `components/ui`.
+* A instância do Axios deve estar pronta para ser usada nos hooks.
