@@ -24,3 +24,11 @@ model Client {
 
   @@map("clients")
 }
+
+model Color {
+  id      String @id @default(uuid())
+  name    String @unique
+  hexCode String @map("hex_code")
+
+  @@map("colors")
+}

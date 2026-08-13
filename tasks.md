@@ -40,38 +40,28 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 * O middleware de validação do Zod deve bloquear requisições com dados faltantes ou inválidos (retornando status `400`).
 * Tentativas de cadastro com CPF ou e-mail já existentes devem ser tratadas e retornar um erro claro (ex: status `409 Conflict`), garantindo que o cliente saiba do erro[cite: 1].
 
----
-
-## 🎨 Fase 4: Estrutura Base do Frontend
-- [ ] Limpar o template padrão do Vite em `apps/frontend`.
-- [ ] Instalar e configurar TailwindCSS (ou framework de UI escolhido).
-- [ ] Desenhar o componente de formulário contendo os inputs: Nome completo, CPF, E-mail, Cor preferida (Select) e Observações (Textarea)[cite: 1].
-- [ ] Criar a lista de cores do arco-íris em um arquivo de configuração (array/constante) para ser mapeada no Select.
-
-**Critérios de Aceite:**
-* A interface deve ser responsiva e limpa.
-* A lista de cores deve ser facilmente alterável no código (não engessada), cumprindo o requisito de que as opções podem mudar posteriormente[cite: 1].
-
----
-
-## 🔗 Fase 5: Integração e Validação do Frontend
-- [ ] Configurar o React Hook Form no formulário.
-- [ ] Integrar o Zod Resolver utilizando o `ClientSchema` importado do pacote `@eteg/shared`.
-- [ ] Criar a função de submissão (fetch/axios) conectando com o endpoint do Backend.
-- [ ] Implementar estados visuais: Loading (desabilitar botão), Toast de Sucesso e Toast de Erro.
+## 🛡️ Fase 4: Evolução do Domínio - Painel Admin (Backend)
+- [x] Criar o modelo `Color` no `schema.prisma` (id, name, hexCode) para permitir flexibilidade e gerar nova migration.
+- [x] Atualizar a interface `IClientRepository` com os métodos `findAll()` e `delete(id: string)`.
+- [x] Criar a interface `IColorRepository` com o método `findAll()`.
+- [x] Implementar os novos métodos no `PrismaClientRepository` e criar o adaptador `PrismaColorRepository`.
+- [x] Criar os novos casos de uso em `apps/backend/src/use-cases`: `ListClientsUseCase`, `DeleteClientUseCase` e `ListColorsUseCase`.
+- [x] Criar os Controllers necessários e registrar as novas rotas no Express: `GET /clients`, `DELETE /clients/:id` e `GET /colors`.
 
 **Critérios de Aceite:**
-* O formulário não deve permitir submissão com dados inválidos (validação em tempo real ou no blur).
-* O cliente deve receber um feedback visual claro se o cadastro foi bem sucedido ou se houve falha[cite: 1].
+* A modelagem de cores passa a ser dinâmica pelo banco, cumprindo o requisito de que "isso pode mudar posteriormente".
+* O endpoint `DELETE /clients/:id` deve retornar status `204 (No Content)` em caso de sucesso.
+* O endpoint `GET /colors` deve listar as opções disponíveis de forma limpa.
+* A Arquitetura Hexagonal deve ser rigorosamente mantida: os novos UseCases **não** podem importar recursos do Prisma ou Express.
 
----
-
-## 🚀 Fase 6: DevOps e Entrega Final
-- [ ] Criar o `Dockerfile` para o Backend (imagem Node.js baseada na arquitetura sugerida)[cite: 1].
-- [ ] Atualizar o `docker-compose.yml` para rodar o Banco de Dados e a Aplicação Node simultaneamente.
-- [ ] Garantir que todo o código está em um único repositório[cite: 1].
-- [ ] Escrever o `README.md` detalhado.
+## 📖 Fase 5: Documentação e Filtros Analíticos (Fechamento do Backend)
+- [ ] Atualizar o `ListClientsUseCase` e o `IClientRepository` para aceitar um filtro opcional por cor (`colorId`).
+- [ ] Atualizar o `ClientController` para extrair o `colorId` dos *Query Parameters* (`req.query`) e repassar ao UseCase.
+- [ ] Instalar as dependências do Swagger (`swagger-ui-express`, `swagger-jsdoc` ou equivalente) no `apps/backend`.
+- [ ] Integrar os schemas do Zod (do `@eteg/shared`) para gerar as definições do Swagger automaticamente (OpenAPI 3.0).
+- [ ] Criar a rota pública `GET /api-docs` para renderizar a interface visual do Swagger UI.
 
 **Critérios de Aceite:**
-* O comando `docker compose up` deve subir toda a infraestrutura necessária sem erros.
-* O `README.md` deve conter as instruções exatas de como rodar o projeto e uma breve explicação sobre a escolha da Arquitetura Hexagonal e do Monorepo.
+* A rota `GET /clients?colorId={id}` deve retornar apenas os clientes daquela cor específica.
+* A interface do Swagger deve carregar corretamente e listar todos os endpoints criados (Clientes e Cores).
+* Os *schemas* de requisição e resposta no Swagger devem refletir as regras de negócio[cite: 1] (ex: CPF obrigatório, etc).

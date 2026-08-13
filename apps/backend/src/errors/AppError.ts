@@ -14,6 +14,12 @@ export class ConflictError extends AppError {
   }
 }
 
+export class NotFoundError extends AppError {
+  constructor(message: string) {
+    super(message, 404);
+  }
+}
+
 export class ValidationError extends AppError {
   public readonly details: Array<{ path: string; message: string }>;
 
