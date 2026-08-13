@@ -12,10 +12,6 @@ function getStoredTheme(): Theme {
   return stored === 'light' || stored === 'dark' ? stored : 'system'
 }
 
-function resolveIsDark(theme: Theme): boolean {
-  return theme === 'system' ? getSystemTheme() === 'dark' : theme === 'dark'
-}
-
 export function useThemeToggle(): UseThemeToggleReturn {
   const [theme, setTheme] = useState<Theme>(getStoredTheme)
   const [systemIsDark, setSystemIsDark] = useState<boolean>(getSystemTheme() === 'dark')

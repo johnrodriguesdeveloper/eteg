@@ -17,5 +17,35 @@ services:
       timeout: 5s
       retries: 5
 
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    container_name: eteg-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-eteg}:${POSTGRES_PASSWORD:-eteg}@postgres:5432/${POSTGRES_DB:-eteg}?schema=public
+      PORT: 3333
+      FRONTEND_URL: http://localhost:${FRONTEND_PORT:-8080}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-3333}:3333"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+      args:
+        VITE_API_URL: http://localhost:${BACKEND_PORT:-3333}
+    container_name: eteg-frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
 volumes:
   postgres_data:
