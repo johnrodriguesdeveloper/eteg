@@ -106,12 +106,12 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 * A instância do Axios deve estar pronta para ser usada nos hooks.
 
 ## 📝 Fase 9: O Formulário de Cadastro do John Doe (Frontend)
-- [ ] Criar a pasta `apps/frontend/src/features/client-form` (ou equivalente) contendo exatamente: `index.tsx`, `hook.ts` e `types.d.ts`.
-- [ ] No `hook.ts`, implementar a chamada `GET /colors` com Axios em um `useEffect` (ou React Query) para popular a lista de cores disponíveis[cite: 1].
-- [ ] No `hook.ts`, configurar o `react-hook-form` com o `zodResolver`, importando o schema de validação diretamente de `@eteg/shared`.
-- [ ] No `hook.ts`, criar a função de `onSubmit` chamando `POST /clients`. Gerenciar o estado de *loading* e disparar Toasts (Sonner) de sucesso ou erro (ex: informando se o CPF/E-mail já está cadastrado), garantindo o feedback ao usuário[cite: 1].
-- [ ] No `index.tsx`, construir a interface renderizando os componentes do Shadcn (`Form`, `Input`, `Select`, `Textarea`, `Button`) e consumindo estritamente as propriedades retornadas pelo `hook.ts`.
-- [ ] Importar e renderizar esse formulário na página principal (`App.tsx`).
+- [x] Criar a pasta `apps/frontend/src/features/client-form` (ou equivalente) contendo exatamente: `index.tsx`, `hook.ts` e `types.d.ts`.
+- [x] No `hook.ts`, implementar a chamada `GET /colors` com Axios em um `useEffect` (ou React Query) para popular a lista de cores disponíveis[cite: 1].
+- [x] No `hook.ts`, configurar o `react-hook-form` com o `zodResolver`, importando o schema de validação diretamente de `@eteg/shared`.
+- [x] No `hook.ts`, criar a função de `onSubmit` chamando `POST /clients`. Gerenciar o estado de *loading* e disparar Toasts (Sonner) de sucesso ou erro (ex: informando se o CPF/E-mail já está cadastrado), garantindo o feedback ao usuário[cite: 1].
+- [x] No `index.tsx`, construir a interface renderizando os componentes do Shadcn (`Form`, `Input`, `Select`, `Textarea`, `Button`) e consumindo estritamente as propriedades retornadas pelo `hook.ts`.
+- [x] Importar e renderizar esse formulário na página principal (`App.tsx`).
 
 **Critérios de Aceite:**
 * O arquivo `index.tsx` não deve conter nenhuma lógica de estado, ciclo de vida (`useEffect`) ou chamadas HTTP (Respeito rigoroso à separação de responsabilidades).
