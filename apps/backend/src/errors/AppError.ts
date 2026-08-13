@@ -13,3 +13,12 @@ export class ConflictError extends AppError {
     super(message, 409);
   }
 }
+
+export class ValidationError extends AppError {
+  public readonly details: Array<{ path: string; message: string }>;
+
+  constructor(details: Array<{ path: string; message: string }>) {
+    super("Dados inválidos.", 400);
+    this.details = details;
+  }
+}

@@ -29,11 +29,11 @@ Este documento rastreia o progresso do desenvolvimento da aplicação de cadastr
 ---
 
 ## 🔌 Fase 3: Adaptadores e API (Backend)
-- [ ] Criar o `PrismaClientRepository` implementando a interface `IClientRepository`.
-- [ ] Criar o `ClientController` para lidar com a requisição HTTP.
-- [ ] Criar middlewares em `apps/backend/src/middlewares` (Validação do Zod e Tratamento Global de Erros).
-- [ ] Configurar as rotas no Express (ex: `POST /clients`) e conectar o Controller.
-- [ ] Configurar o `app.ts` centralizando rotas e middlewares.
+- [x] Criar o `PrismaClientRepository` implementando a interface `IClientRepository`.
+- [x] Criar o `ClientController` para lidar com a requisição HTTP.
+- [x] Criar middlewares em `apps/backend/src/middlewares` (Validação do Zod e Tratamento Global de Erros).
+- [x] Configurar as rotas no Express (ex: `POST /clients`) e conectar o Controller.
+- [x] Configurar o `app.ts` centralizando rotas e middlewares.
 
 **Critérios de Aceite:**
 * O endpoint `POST /clients` deve retornar status `201` em caso de sucesso.
